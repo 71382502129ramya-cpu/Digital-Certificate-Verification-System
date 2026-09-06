@@ -1,10 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-
 import { createServer as createViteServer } from 'vite';
 import { initDatabase } from './server/db';
-
 import authRoutes from './server/routes/auth';
 import certificatesRoutes from './server/routes/certificates';
 import eventsRoutes from './server/routes/events';
