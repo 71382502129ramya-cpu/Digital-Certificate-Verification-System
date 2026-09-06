@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import { fileURLToPath } from 'url';
+
 import { createServer as createViteServer } from 'vite';
 import { initDatabase } from './server/db';
 
@@ -14,12 +14,11 @@ import leaderboardRoutes from './server/routes/leaderboard';
 import logsRoutes from './server/routes/logs';
 import statsRoutes from './server/routes/stats';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = Number(process.env.PORT) || 3000;
 
   // Initialize PostgreSQL schema and seed data
   await initDatabase();
