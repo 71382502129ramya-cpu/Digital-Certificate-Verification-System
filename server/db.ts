@@ -15,9 +15,8 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// PGlite in-memory PostgreSQL instance for high-speed, crash-resilient container execution
-export const db = new PGlite();
-
+// Persistent PostgreSQL database using PGlite filesystem storage
+export const db = new PGlite(dataDir);
 export function calculateCertificateHash(data: {
   certificateId: string;
   recipientEmail: string;
