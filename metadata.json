@@ -1,0 +1,6 @@
+{
+  "name": "Digital Certificate Verification System",
+  "description": "A comprehensive digital certificate issuance, verification, and management platform with role-based access, QR codes, cryptographic SHA-256 verification, and PDF generation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
