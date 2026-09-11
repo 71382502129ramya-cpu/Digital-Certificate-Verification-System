@@ -1,13 +1,7 @@
-import { PGlite } from '@electric-sql/pglite';
+import { Pool } from 'pg';
 import crypto from 'crypto';
 import path from 'path';
 import fs from 'fs';
-
-// Ensure data directory exists for persistent PostgreSQL storage
-const dataDir = path.join(process.cwd(), 'data', 'postgres');
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
-}
 
 // Ensure uploads directory exists
 const uploadsDir = path.join(process.cwd(), 'uploads');
@@ -15,8 +9,27 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Persistent PostgreSQL database using PGlite filesystem storage
-export const db = new PGlite(dataDir);
+// Supabase / PostgreSQL connection.
+// Add DATABASE_URL in Render Environment Variables.
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error('DATABASE_URL environment variable is not set.');
+}
+
+const pool = new Pool({
+  connectionString,
+  ssl: connectionString.includes('localhost')
+    ? false
+    : { rejectUnauthorized: false },
+});
+
+// Compatibility wrapper for the existing routes.
+export const db = {
+  query: (text: string, values?: unknown[]) => pool.query(text, values),
+  exec: (text: string) => pool.query(text),
+};
+
 export function calculateCertificateHash(data: {
   certificateId: string;
   recipientEmail: string;
